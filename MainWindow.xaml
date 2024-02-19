@@ -1,0 +1,91 @@
+﻿<Window x:Class="WPF_AirportThing_2024_02_20.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_AirportThing_2024_02_20"
+        xmlns:wv="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        mc:Ignorable="d"
+        Title="AirportThing" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" />
+        
+        <!-- Row 0 - Menu -->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="0 0 0 5" FlowDirection="LeftToRight">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="MnuImport" Header="_Import..." />
+                <MenuItem x:Name="MnuExport" Header="_Export" >
+                    <MenuItem x:Name="MnuExportSingle" Header="Export _Single Airport">
+                        <MenuItem x:Name="MnuExportSingleAsCsv" Header="as _CSV..." />
+                        <MenuItem x:Name="MnuExportSingleAsJson" Header="as _Json..." />
+                    </MenuItem>
+                    <MenuItem x:Name="MnuExportMultiple" Header="Export _Multiple Airports">
+                        <MenuItem x:Name="MnuExportMultipleAsCsv" Header="as _CSV..." />
+                        <MenuItem x:Name="MnuExportMultipleAsJson" Header="as _Json..." />
+                    </MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem x:Name="MnuExit" Header="E_xit" Click="MnuExit_OnClick" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem x:Name="MnuAdd" Header="_Add..." />
+                <MenuItem x:Name="MnuEdit" Header="_Edit..." />
+                <MenuItem x:Name="MnuDelete" Header="_Delete" />
+            </MenuItem>
+        </Menu>
+        
+        <!-- Row 1 - ComboBoxes -->
+        <ComboBox x:Name="CmbAirport" Grid.Row="1" Grid.Column="0" SelectedIndex="0" FlowDirection="LeftToRight">
+            <ComboBoxItem Content="Airport 1" />
+            <ComboBoxItem Content="Airport 2" />
+            <ComboBoxItem Content="Airport 3" />
+        </ComboBox>
+        <Label Grid.Row="1" Grid.Column="1" Content="Airport" ></Label>
+        <ComboBox x:Name="CmbType" Grid.Row="1" Grid.Column="2" SelectedIndex="0" FlowDirection="LeftToRight">
+            <ComboBoxItem Content="Type 1" />
+            <ComboBoxItem Content="Type 2" />
+            <ComboBoxItem Content="Type 3" />
+            <ComboBoxItem >
+                <ComboBox x:Name="CmbTypeSub" Text="SubCmb" SelectedIndex="0" FlowDirection="LeftToRight">
+                    <ComboBoxItem Content="Sub 1" />
+                    <ComboBoxItem Content="Sub 2" />
+                    <ComboBoxItem Content="Sub 3" />
+                </ComboBox>
+            </ComboBoxItem>
+        </ComboBox>
+        <Label Grid.Row="1" Grid.Column="3" Content="Type" ></Label>
+        
+        <!-- Row 2 : Col 0 - Map -->
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+            <wv:WebView2 ></wv:WebView2>
+        </DockPanel>
+        
+        <!-- Row 2 : Col 3 - Data -->
+        <ScrollViewer x:Name="ScrView" Grid.Row="2" Grid.Column="3" >
+            
+            <TextBlock Text="Head1" Style="{DynamicResource InfoCol}">
+                <LineBreak />
+                <TextBox x:Name="Txt1" Text="subHead1" IsReadOnly="True" />
+                <LineBreak />
+                <TextBox x:Name="Txt2" Text="subHead2" IsReadOnly="True" />
+                <LineBreak />
+                <TextBox x:Name="Txt3" Text="subHead3" IsReadOnly="True" />
+            </TextBlock>
+            
+        </ScrollViewer>
+        
+        
+        
+    </Grid>
+</Window>
