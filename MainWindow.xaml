@@ -18,11 +18,13 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <GridSplitter Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" />
+        <GridSplitter Grid.Column="4" Grid.RowSpan="3" Width="3" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                      Background="Black" />
         
         <!-- Row 0 - Menu -->
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="0 0 0 5" FlowDirection="LeftToRight">
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="0 0 0 5" FlowDirection="LeftToRight">
             <MenuItem Header="_File">
                 <MenuItem x:Name="MnuImport" Header="_Import..." />
                 <MenuItem x:Name="MnuExport" Header="_Export" >
@@ -67,12 +69,12 @@
         <Label Grid.Row="1" Grid.Column="3" Content="Type" ></Label>
         
         <!-- Row 2 : Col 0 - Map -->
-        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" >
             <wv:WebView2 ></wv:WebView2>
         </DockPanel>
         
         <!-- Row 2 : Col 3 - Data -->
-        <ScrollViewer x:Name="ScrView" Grid.Row="2" Grid.Column="3" >
+        <ScrollViewer x:Name="ScrView" Grid.Row="2" Grid.Column="4" >
             
             <TextBlock Text="Head1" Style="{DynamicResource InfoCol}">
                 <LineBreak />
