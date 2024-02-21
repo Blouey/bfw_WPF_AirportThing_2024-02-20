@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_AirportThing_2024_02_20"
         xmlns:wv="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="AirportThing" Height="450" Width="800">
+        Title="AirportThing" Height="1000" Width="1400" Loaded="MainWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,16 +18,19 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+
         </Grid.ColumnDefinitions>
-        <GridSplitter Grid.Column="4" Grid.RowSpan="3" Width="3" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                      Background="Black" />
-        
+        <GridSplitter Grid.Column="6" Grid.RowSpan="3" Width="5" VerticalAlignment="Stretch"
+                      HorizontalAlignment="Left" Background="Black" />
+
         <!-- Row 0 - Menu -->
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="0 0 0 5" FlowDirection="LeftToRight">
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Margin="0 0 0 5" >
             <MenuItem Header="_File">
-                <MenuItem x:Name="MnuImport" Header="_Import..." />
-                <MenuItem x:Name="MnuExport" Header="_Export" >
+                <MenuItem x:Name="MnuImport" Header="_Import..." Click="MnuImport_OnClick"/>
+                <MenuItem x:Name="MnuExport" Header="_Export">
                     <MenuItem x:Name="MnuExportSingle" Header="Export _Single Airport">
                         <MenuItem x:Name="MnuExportSingleAsCsv" Header="as _CSV..." />
                         <MenuItem x:Name="MnuExportSingleAsJson" Header="as _Json..." />
@@ -38,7 +41,7 @@
                     </MenuItem>
                 </MenuItem>
                 <Separator />
-                <MenuItem x:Name="MnuExit" Header="E_xit" Click="MnuExit_OnClick" />
+                <MenuItem x:Name="MnuExit" Header="E_xit" InputGestureText="Alt+F4" Click="MnuExit_OnClick" />
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem x:Name="MnuAdd" Header="_Add..." />
@@ -46,48 +49,64 @@
                 <MenuItem x:Name="MnuDelete" Header="_Delete" />
             </MenuItem>
         </Menu>
-        
+
         <!-- Row 1 - ComboBoxes -->
-        <ComboBox x:Name="CmbAirport" Grid.Row="1" Grid.Column="0" SelectedIndex="0" FlowDirection="LeftToRight">
-            <ComboBoxItem Content="Airport 1" />
-            <ComboBoxItem Content="Airport 2" />
-            <ComboBoxItem Content="Airport 3" />
-        </ComboBox>
-        <Label Grid.Row="1" Grid.Column="1" Content="Airport" ></Label>
-        <ComboBox x:Name="CmbType" Grid.Row="1" Grid.Column="2" SelectedIndex="0" FlowDirection="LeftToRight">
-            <ComboBoxItem Content="Type 1" />
-            <ComboBoxItem Content="Type 2" />
-            <ComboBoxItem Content="Type 3" />
-            <ComboBoxItem >
-                <ComboBox x:Name="CmbTypeSub" Text="SubCmb" SelectedIndex="0" FlowDirection="LeftToRight">
-                    <ComboBoxItem Content="Sub 1" />
-                    <ComboBoxItem Content="Sub 2" />
-                    <ComboBoxItem Content="Sub 3" />
-                </ComboBox>
-            </ComboBoxItem>
-        </ComboBox>
-        <Label Grid.Row="1" Grid.Column="3" Content="Type" ></Label>
+        <Label Grid.Row="1" Grid.Column="0" Content="Continent:"></Label>
+        <ComboBox x:Name="CmbContinent" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" SelectionChanged="CmbContinent_OnSelectionChanged_OnSelectionChanged" />
         
+        <Label Grid.Row="1" Grid.Column="2" Content="Type:"></Label>
+        <ComboBox x:Name="CmbType" Grid.Row="1" Grid.Column="3" IsEnabled="False" HorizontalAlignment="Stretch" SelectionChanged="CmbType_OnSelectionChanged" />
+        
+        <Label Grid.Row="1" Grid.Column="4" Content="Airport-Name:"></Label>
+        <ComboBox x:Name="CmbName" Grid.Row="1" Grid.Column="5" IsEnabled="False" HorizontalAlignment="Stretch" SelectionChanged="CmbName_OnSelectionChanged"/>
+        
+
         <!-- Row 2 : Col 0 - Map -->
-        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" >
-            <wv:WebView2 ></wv:WebView2>
+        <DockPanel x:Name="WvPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6">
+            <wv:WebView2 x:Name="Wv2" Source="https://www.google.de"></wv:WebView2>
         </DockPanel>
-        
+
         <!-- Row 2 : Col 3 - Data -->
-        <ScrollViewer x:Name="ScrView" Grid.Row="2" Grid.Column="4" >
-            
-            <TextBlock Text="Head1" Style="{DynamicResource InfoCol}">
-                <LineBreak />
-                <TextBox x:Name="Txt1" Text="subHead1" IsReadOnly="True" />
-                <LineBreak />
-                <TextBox x:Name="Txt2" Text="subHead2" IsReadOnly="True" />
-                <LineBreak />
-                <TextBox x:Name="Txt3" Text="subHead3" IsReadOnly="True" />
-            </TextBlock>
-            
+        <ScrollViewer x:Name="ScrView" Grid.Row="2" Grid.Column="6"  HorizontalAlignment="Stretch">
+            <StackPanel>
+                <Label x:Name="LblName"  FontSize="16" FontWeight="Bold" ></Label>                
+                <Label x:Name="LblId" Style="{DynamicResource InfoColLbl}"></Label>
+                <Label x:Name="LblIdent" Style="{DynamicResource InfoColLbl}">
+                    <Label.Content>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="Ident" />
+                            <Binding Path="Name" />
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
+                <Label x:Name="LblType" FontSize="12" FontWeight="Bold">
+                    <Label.Content>
+                        <StackPanel>
+                        <TextBlock Text="Type"/>
+                        
+                        <TextBox Text="Test"></TextBox>
+                        </StackPanel>
+                        
+                    </Label.Content>
+                </Label>
+                <Label x:Name="LblLat" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblLong" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblElevation" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblContinent" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblIsoCountry" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblIsoRegion" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblMunicipality" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblServices" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblGpsCode" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblIataCode" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblLocalCode" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblHomeLink" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblWikiLink" FontSize="12" FontWeight="Bold"></Label>
+                <Label x:Name="LblKeywords" FontSize="12" FontWeight="Bold"></Label>
+                
+            </StackPanel>
         </ScrollViewer>
-        
-        
-        
+
+
     </Grid>
 </Window>
